@@ -42,10 +42,6 @@ public class DeviceController {
 		return new ResponseEntity<List<Device>>(list, responseHeaders, HttpStatus.OK);
 	}
 	
-	@GetMapping("/hello")
-	public String hello() {
-		return "Hello, Postman!";
-	}
 	
 	@GetMapping("/info")
 	public ResponseEntity<List<Info>> allInfo() {
