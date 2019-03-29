@@ -21,7 +21,7 @@ public class DeviceInfo {
 		
 	}
 	
-	// c2
+	// constructor 2
 	public DeviceInfo(Integer deviceId, Integer deviceSubId, Integer firmware, String deviceProvideName, Integer deviceModel,
 			Integer deviceMake, Date deviceExpiry, String certification, String timestamp) {
 		super();

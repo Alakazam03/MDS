@@ -11,10 +11,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.mosip.mds.entity.Device;
 import io.mosip.mds.entity.Info;
+import io.mosip.mds.entity.RequestObject;
 import io.mosip.mds.service.DeviceService;
 import io.mosip.mds.service.InfoService;
 
@@ -42,10 +44,7 @@ public class DeviceController {
 		return new ResponseEntity<List<Device>>(list, responseHeaders, HttpStatus.OK);
 	}
 	
-	@GetMapping("/hello")
-	public String hello() {
-		return "Hello, Postman!";
-	}
+	
 	
 	@GetMapping("/info")
 	public ResponseEntity<List<Info>> allInfo() {
@@ -58,11 +57,14 @@ public class DeviceController {
 		responseHeaders.setConnection("Closed");
 		return new ResponseEntity<List<Info>>(list, responseHeaders, HttpStatus.OK);
 	}
-	
-//	@PostMapping("/capture")
-//	public ResponseEntity<> Capture(@RequestBody ){
+
+
+	@PostMapping(path = "/capture")
+	public String DeviceCapture(@RequestBody RequestObject obj){
 //		HttpHeaders responseHeaders  = new HttpHeaders
-//		
-//	}
+		System.out.println("vaibhav aggarwal"+ obj.toString());
+		return "information retrieved " + obj.getEnv() + " list object "+ obj.getBio().get(0).getType();
+		
+	}
 }
 
