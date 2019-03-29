@@ -11,7 +11,7 @@ public class Info {
 	private String ServiceVersion; // version of document
 	private Integer DeviceSubId; // starting from 1 url
 	private String CallbackId;
-	private DeviceInfo DeviceInfo;
+	private DeviceInfo deviceInfo;
 	
 	
 	public Info() {
@@ -28,8 +28,7 @@ public class Info {
 //		this.deviceSubId = device.deviceSubId;
 		this.CallbackId = device.getCallbackId();
 		this.DeviceSubId = device.getDeviceSubId();
-		DeviceInfo = new DeviceInfo(info.getDeviceId(),info.getDeviceSubId(), info.getFirmware(), info.getDeviceProvideName(), 
-				info.getdeviceModel(),info.getDeviceMake(), info.getDeviceExpiry(), device.getCertification(), info.getTimestamp());
+		deviceInfo = info;
 		
 	}
 	public String getType() {
@@ -75,10 +74,10 @@ public class Info {
 		CallbackId = callbackId;
 	}
 	public DeviceInfo getDeviceInfo() {
-		return DeviceInfo;
+		return this.deviceInfo;
 	}
 	public void setDeviceInfo(DeviceInfo deviceInfo) {
-		DeviceInfo = deviceInfo;
+		this.deviceInfo = deviceInfo;
 	}
 	
 	

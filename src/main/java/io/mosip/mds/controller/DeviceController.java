@@ -44,7 +44,10 @@ public class DeviceController {
 		return new ResponseEntity<List<Device>>(list, responseHeaders, HttpStatus.OK);
 	}
 	
+<<<<<<< HEAD
 	
+=======
+>>>>>>> e9cf3805abcd658dab992720115a1f489f5c98ff
 	
 	@GetMapping("/info")
 	public ResponseEntity<List<Info>> allInfo() {

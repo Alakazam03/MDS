@@ -2,11 +2,12 @@ package io.mosip.mds.entity;
 
 
 import java.util.Date;
+import java.util.List;
 
 public class DeviceInfo {
 	
 	private Integer deviceId;
-	private Integer deviceSubId;
+	private List<Integer> deviceSubId;
 	private Integer firmware;
 	private String deviceProvideName;
 	private Integer deviceModel;
@@ -21,8 +22,13 @@ public class DeviceInfo {
 		
 	}
 	
+<<<<<<< HEAD
 	// constructor 2
 	public DeviceInfo(Integer deviceId, Integer deviceSubId, Integer firmware, String deviceProvideName, Integer deviceModel,
+=======
+	// c2
+	public DeviceInfo(Integer deviceId, List<Integer> deviceSubId, Integer firmware, String deviceProvideName, Integer deviceModel,
+>>>>>>> e9cf3805abcd658dab992720115a1f489f5c98ff
 			Integer deviceMake, Date deviceExpiry, String certification, String timestamp) {
 		super();
 		this.deviceId = deviceId;
@@ -47,12 +53,15 @@ public class DeviceInfo {
 	public void setDeviceId(Integer deviceId) {
 		this.deviceId = deviceId;
 	}
-	public Integer getDeviceSubId() {
+	
+	public List<Integer> getDeviceSubId() {
 		return deviceSubId;
 	}
-	public void setDeviceSubId(Integer deviceSubId) {
+
+	public void setDeviceSubId(List<Integer> deviceSubId) {
 		this.deviceSubId = deviceSubId;
 	}
+
 	public Integer getFirmware() {
 		return firmware;
 	}
