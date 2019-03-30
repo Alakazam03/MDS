@@ -29,6 +29,9 @@ public class DeviceController {
 	@Autowired
 	private InfoService infoService;
 	
+//	@Autowired
+//	private 
+	
 	private String location = "http://127.0.0.1";
 	private String port = "8081";
 	
@@ -44,10 +47,7 @@ public class DeviceController {
 		return new ResponseEntity<List<Device>>(list, responseHeaders, HttpStatus.OK);
 	}
 	
-<<<<<<< HEAD
-	
-=======
->>>>>>> e9cf3805abcd658dab992720115a1f489f5c98ff
+
 	
 	@GetMapping("/info")
 	public ResponseEntity<List<Info>> allInfo() {
@@ -63,10 +63,17 @@ public class DeviceController {
 
 
 	@PostMapping(path = "/capture")
-	public String DeviceCapture(@RequestBody RequestObject obj){
+	public ResponseEntity<RequestObject> DeviceCapture(@RequestBody RequestObject obj){
 //		HttpHeaders responseHeaders  = new HttpHeaders
 		System.out.println("vaibhav aggarwal"+ obj.toString());
-		return "information retrieved " + obj.getEnv() + " list object "+ obj.getBio().get(0).getType();
+		//return "information retrieved " + obj.getEnv() + " list object "+ obj.getBio().get(0).getType();
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.setLocation(URI.create(location + ":" + port + "/device"));
+		responseHeaders.setCacheControl(CacheControl.noCache());
+//		responseHeaders.setContentLength(100000);
+		responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+		responseHeaders.setConnection("Closed");
+		return new ResponseEntity<RequestObject>(obj, responseHeaders, HttpStatus.OK);
 		
 	}
 }

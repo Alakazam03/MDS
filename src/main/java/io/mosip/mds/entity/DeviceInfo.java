@@ -22,13 +22,12 @@ public class DeviceInfo {
 		
 	}
 	
-<<<<<<< HEAD
+
 	// constructor 2
-	public DeviceInfo(Integer deviceId, Integer deviceSubId, Integer firmware, String deviceProvideName, Integer deviceModel,
-=======
+//	public DeviceInfo(Integer deviceId, Integer deviceSubId, Integer firmware, String deviceProvideName, Integer deviceModel,
+
 	// c2
 	public DeviceInfo(Integer deviceId, List<Integer> deviceSubId, Integer firmware, String deviceProvideName, Integer deviceModel,
->>>>>>> e9cf3805abcd658dab992720115a1f489f5c98ff
 			Integer deviceMake, Date deviceExpiry, String certification, String timestamp) {
 		super();
 		this.deviceId = deviceId;
