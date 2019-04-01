@@ -2,6 +2,10 @@ package io.mosip.mds.entity;
 
 public class Data {
 	
+	//How are we getting the values
+	//Opt1: from device every time
+	//Opt2: stored one time based on some database
+//	if yes then optimise the code accordiing to it
 	private Integer deviceCode;
 	private Integer deviceProviderId;
 	private Integer deviceServiceId;

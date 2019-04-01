@@ -4,16 +4,19 @@ public class Biometrics {
 	
 	private String hash;
 	private String signature;
-	private Data d;
+	private Data data;
 	
-	public Biometrics(String hash, String signature, Data d) {
+	public Biometrics(String i, String signature, Data d) {
 		super();
-		this.hash = hash;
+		this.hash = i;
 		this.signature = signature;
-		this.d = d;
+		this.data = d;
 	}
 	
 	
+	
+
+
 	public String getHash() {
 		return hash;
 	}
@@ -35,15 +38,17 @@ public class Biometrics {
 
 
 	public Data getD() {
-		return d;
+		return data;
 	}
 
 
 	public void setD(Data d) {
-		this.d = d;
+		this.data = d;
 	}
 
 
+	
+//	setter
 	
 
 	

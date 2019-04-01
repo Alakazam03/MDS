@@ -1,6 +1,6 @@
 package io.mosip.mds.entity;
 
-import java.util.Date;
+//import java.util.Date;
 import java.util.List;
 
 public class RequestObject {
