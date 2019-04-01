@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-public class BiometricService {
+public class BioMetricService {
 	
 //	private static final String UTF_8 = null;
 	private ArrayList<Biometrics> list = new ArrayList<Biometrics>();
@@ -30,7 +30,7 @@ public class BiometricService {
 //	        System.out.println("The SHA256 (hexadecimal encoded) hash is:"+hash);
 	//here hash can be deviceId
 
-	public BiometricService(Data data) {
+	public BioMetricService(Data data) {
 		super();
 		
 //		BiometricService bo = new BiometricService();
