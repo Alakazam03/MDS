@@ -9,12 +9,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,8 +54,31 @@ public class StreamController {
 		}
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.setContentType(MediaTypeFactory.getMediaType(video).get());
-		return new ResponseEntity<>("Success", HttpStatus.OK);
+		return new ResponseEntity<>("Success", responseHeaders, HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/image")
+	public ResponseEntity<String> getImageStream(HttpServletResponse response) throws MalformedURLException, InterruptedException {
+		// path to video file
+		String dir = "C:\\img\\";
+		   try {
+			   InputStream is = null; 
+			   for(int i = 1; i < 10; i++) {
+				   is = new FileInputStream(dir + i + ".jpg");
+				   //BufferedImage img = ImageIO.read(is);
+				   IOUtils.copy(is, response.getOutputStream());
+				   Thread.sleep(100);
+			   }
+		        
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    }
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.setContentType(MediaTypeFactory.getMediaType(dir + "1.jpg").get());
+		return new ResponseEntity<>("Success", responseHeaders, HttpStatus.OK);
+	}
+	
+	
 	// incomplete
 	@GetMapping("/webcam")
 	public ResponseEntity<String> getWebcamStream(HttpServletResponse response) throws Throwable {
@@ -85,8 +110,19 @@ public class StreamController {
 			// 10 FPS
 			Thread.sleep(100);
 		}
-
+		webcam.close();
 		writer.close();
+		InputStream fileStream = null;
+		try {
+			fileStream = new FileInputStream(file);
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			IOUtils.copy(fileStream, response.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return new ResponseEntity<>("Success", HttpStatus.OK);
 	}
 }
