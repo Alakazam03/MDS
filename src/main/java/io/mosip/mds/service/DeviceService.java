@@ -1,27 +1,44 @@
 package io.mosip.mds.service;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.mosip.mds.entity.Device;
 
 @Service
 public class DeviceService {
+	
+	@Value("${mds.device.type}")
+	private String deviceType;
+	
 	private ArrayList<Device> list = new ArrayList<Device>();
 	
-	public DeviceService() {
-		list.add(new Device("Fingerprint", 1, "Fingerprint", "Active", "L0", "1.0", 1, "http://127.0.0.1/1"));
-		list.add(new Device("Face", 2, "Face", "Active", "L1", "1.0", 1, "http://127.0.0.1/2"));
-		list.add(new Device("Fingerprint", 3, "Fingerprint", "Active", "L0", "1.0", 1, "http://127.0.0.1/3"));
-		list.add(new Device("Fingerprint", 4, "Fingerprint", "Active", "L0", "1.0", 1, "http://127.0.0.1/4"));
-		list.add(new Device("Fingerprint", 5, "Fingerprint", "Active", "L0", "1.0", 1, "http://127.0.0.1/5"));
-		list.add(new Device("Fingerprint", 6, "Fingerprint", "Active", "L0", "1.0", 1, "http://127.0.0.1/6"));
+	private static String deviceList = "C:\\Users\\Jagmeeet Singh\\Documents\\GitHub\\SS\\MDS\\src\\main\\resources\\devices";
+	
+	public DeviceService() throws Exception {
+		java.io.BufferedReader fileReader = new java.io.BufferedReader(new java.io.FileReader(deviceList));
+		// read file until EOF
+		String input = null;
+		String[] tokens = null;
+		while (true) {
+			input = fileReader.readLine();
+			if (input == null || input.equals("")) break;
+			tokens = input.trim().split(",");
+			list.add(new Device(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6], tokens[7]));
+		}
+		fileReader.close();
 	}
 	
-	public List<Device> allDevices() {
-		System.out.println(list);
-		return list;
+	public List<Device> allDevices(String deviceType) {
+		if (deviceType.equals("Biometric Device")) {
+			return list;
+		}
+		ArrayList<Device> filteredList = new ArrayList<Device>();
+		list.stream().filter(i -> i.getType().equals(deviceType)).forEach(filteredList::add);
+		return filteredList;
 	}
 }
