@@ -1,8 +1,12 @@
 package io.mosip.mds.controller;
 
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.List;
 
+//import org.apache.tomcat.jni.Lock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.CacheControl;
@@ -41,6 +45,8 @@ public class DeviceController {
 	@Value("${server.port}")
 	private String port;
 	
+	Lock lock = new ReentrantLock();
+	
 	
 	@GetMapping("/device")
 	public ResponseEntity<String> allDevices(@RequestBody Device deviceType) {
@@ -74,22 +80,31 @@ public class DeviceController {
 
 
 	@PostMapping(path = "/capture")
-	public ResponseEntity<String> DeviceCapture(@RequestBody RequestObject obj){
+	public ResponseEntity<String> DeviceCapture(@RequestBody RequestObject obj) throws InterruptedException{
 		// Locking 
-		String fileName = "src/main/resources/fingerprints/thumbs.jpg";
-		DataBlock d = new DataBlock(12, 45, 34, 56, 43, obj.getMosipProcess(), obj.getEnv(), fileName,"UNKNOWN",  obj.getCaptureTime(), 100, 98 );
-		BiometricService bobj = new BiometricService(d);
-		List<Biometrics> list = bobj.allInfo();
-		String response = null;
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			response = mapper.writeValueAsString(list);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		HttpHeaders responseHeaders = this.getResponseHeaders(response.length());
-		return new ResponseEntity<String>(response, responseHeaders, HttpStatus.OK);
 		
+		if(!((ReentrantLock) lock).isLocked()) {
+				lock.lock();
+				TimeUnit.SECONDS.sleep(3);;
+				String fileName = "src/main/resources/fingerprints/thumbs.jpg";
+				DataBlock d = new DataBlock(12, 45, 34, 56, 43, obj.getMosipProcess(), obj.getEnv(), fileName,"UNKNOWN",  obj.getCaptureTime(), 100, 98 );
+				BiometricService bobj = new BiometricService(d);
+				List<Biometrics> list = bobj.allInfo();
+				String response = null;
+				ObjectMapper mapper = new ObjectMapper();
+				try {
+					response = mapper.writeValueAsString(list);
+				} catch (JsonProcessingException e) {
+					e.printStackTrace();
+				}
+				HttpHeaders responseHeaders = this.getResponseHeaders(response.length());
+				lock.unlock();
+				return new ResponseEntity<String>(response, responseHeaders, HttpStatus.OK);
+		}
+		else{
+			
+			 return new ResponseEntity<String>("Busy", this.getResponseHeaders(4), HttpStatus.SERVICE_UNAVAILABLE);
+		}
 	}
 	
 	private HttpHeaders getResponseHeaders(long contentLength) {

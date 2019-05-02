@@ -17,7 +17,7 @@ public class DeviceService {
 	
 	private ArrayList<Device> list = new ArrayList<Device>();
 	
-	private static String deviceList = "C:\\Users\\Jagmeeet Singh\\Documents\\GitHub\\SS\\MDS\\src\\main\\resources\\devices";
+	private static String deviceList = "src/main/resources/devices";
 	
 	public DeviceService() throws Exception {
 		java.io.BufferedReader fileReader = new java.io.BufferedReader(new java.io.FileReader(deviceList));
