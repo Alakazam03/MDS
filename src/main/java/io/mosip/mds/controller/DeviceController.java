@@ -33,6 +33,9 @@ public class DeviceController {
 	@Autowired
 	private InfoService infoService;
 	
+	@Autowired
+	private BiometricService bobj;
+	
 	@Value("${mds.location:127.0.0.1}")
 	private String location;
 	
@@ -60,7 +63,7 @@ public class DeviceController {
 	@PostMapping(path = "/capture")
 	public ResponseEntity<List<Biometrics>> DeviceCapture(@RequestBody RequestObject obj){
 		// Locking 
-		Data d = new Data(12, 45, 34, 56, 43, obj.getMosipProcess(), obj.getEnv(), "hjgh","UNKNOWN",  obj.getCaptureTime(), 100, 98 );
+		Data d = new Data(1, 45, 34, 56, 43, obj.getMosipProcess(), obj.getEnv(), "hjgh","UNKNOWN",  obj.getCaptureTime(), 100, 98 );
 		BiometricService bobj = new BiometricService(d);
 		List<Biometrics> list = bobj.allInfo();
 		//return "information retrieved " + obj.getEnv() + " list object "+ obj.getBio().get(0).getType();
