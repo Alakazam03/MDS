@@ -22,15 +22,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.sarxos.webcam.Webcam;
-import com.github.sarxos.webcam.WebcamResolution;
-import com.xuggle.mediatool.IMediaWriter;
-import com.xuggle.mediatool.ToolFactory;
-import com.xuggle.xuggler.ICodec;
-import com.xuggle.xuggler.IPixelFormat;
-import com.xuggle.xuggler.IVideoPicture;
-import com.xuggle.xuggler.video.ConverterFactory;
-import com.xuggle.xuggler.video.IConverter;
+//import com.github.sarxos.webcam.Webcam;
+//import com.github.sarxos.webcam.WebcamResolution;
+//import com.xuggle.mediatool.IMediaWriter;
+//import com.xuggle.mediatool.ToolFactory;
+//import com.xuggle.xuggler.ICodec;
+//import com.xuggle.xuggler.IPixelFormat;
+//import com.xuggle.xuggler.IVideoPicture;
+//import com.xuggle.xuggler.video.ConverterFactory;
+//import com.xuggle.xuggler.video.IConverter;
 
 @RestController
 public class StreamController {
@@ -38,7 +38,7 @@ public class StreamController {
 	@GetMapping("/stream")
 	public ResponseEntity<String> getVideoStream(HttpServletResponse response) throws MalformedURLException {
 		// path to video file
-		String fileName = "C:\\sartaj.mp4";
+		String fileName = "src/main/resources/video.mp4";
 		File file = new File(fileName);
 		InputStream fileStream = null;
 		try {
@@ -60,7 +60,7 @@ public class StreamController {
 	@GetMapping(value = "/image")
 	public ResponseEntity<String> getImageStream(HttpServletResponse response) throws MalformedURLException, InterruptedException {
 		// path to video file
-		String dir = "C:\\img\\";
+		String dir = "src/main/resources/";
 		   try {
 			   InputStream is = null; 
 			   for(int i = 1; i < 10; i++) {
@@ -78,7 +78,7 @@ public class StreamController {
 		return new ResponseEntity<>("Success", responseHeaders, HttpStatus.OK);
 	}
 	
-	
+/*	
 	// incomplete
 	@GetMapping("/webcam")
 	public ResponseEntity<String> getWebcamStream(HttpServletResponse response) throws Throwable {
@@ -125,4 +125,5 @@ public class StreamController {
 		}
 		return new ResponseEntity<>("Success", HttpStatus.OK);
 	}
+*/
 }
