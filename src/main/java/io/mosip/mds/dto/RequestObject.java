@@ -3,7 +3,6 @@ package io.mosip.mds.dto;
 //import java.util.Date;
 import java.util.List;
 
-import io.mosip.mds.entity.Bio;
 import lombok.Data;
 
 @Data

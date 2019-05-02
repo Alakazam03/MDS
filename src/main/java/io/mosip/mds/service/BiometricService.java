@@ -1,5 +1,5 @@
 package io.mosip.mds.service;
-import io.mosip.mds.entity.Biometrics;
+import io.mosip.mds.dto.Biometrics;
 import io.mosip.mds.entity.DataBlock;
 import io.mosip.mds.entity.Info;
 

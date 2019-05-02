@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.mosip.mds.dto.Biometrics;
 import io.mosip.mds.dto.RequestObject;
-import io.mosip.mds.entity.Biometrics;
 import io.mosip.mds.entity.DataBlock;
 import io.mosip.mds.entity.Device;
 import io.mosip.mds.entity.Info;

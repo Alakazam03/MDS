@@ -1,4 +1,4 @@
-package io.mosip.mds.entity;
+package io.mosip.mds.dto;
 import lombok.Data;
 @Data
 public class Bio {
