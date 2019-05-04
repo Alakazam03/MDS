@@ -19,7 +19,7 @@
 		<docker.image.prefix>mdsio</docker.image.prefix>
 	</properties>
 
-	<build>
+	<!--build>
 	    <plugins>
 	        <plugin>
 	            <groupId>com.spotify</groupId>
@@ -38,7 +38,7 @@
 	            </configuration>
 	        </plugin>
 	    </plugins>
-	</build>
+	</build-->
 	
 	 <repositories>
     <repository>
