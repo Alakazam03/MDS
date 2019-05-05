@@ -1,0 +1,77 @@
+pom.xml
+========
+<repositories>
+ 	<repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
+
+<dependency>
+    <groupId>com.github.ankitvaishnav</groupId>
+    <artifactId>IVV-Core</artifactId>
+    <version>597d6c9940</version>
+</dependency>
+<dependency>
+    <groupId>com.github.ankitvaishnav</groupId>
+    <artifactId>IVV-DB-Adapter</artifactId>
+    <version>3f9be83356</version>
+</dependency>
+
+___________________
+RequestObject.java
+===================
+
+private String personaId;
+
+public RequestObject(String env, String mosipProcess, Integer version, Integer timeout, String captureTime,
+		Integer transactionId, List<Bio> bio, String customOpts, String personaId) {
+	this.env = env;
+	this.mosipProcess = mosipProcess;
+	this.version = version;
+	this.timeout = timeout;
+	this.captureTime = captureTime;
+	this.transactionId = transactionId;
+	this.bio = bio;
+	this.personaId = personaId;
+}
+_____________________
+DeviceController.java
+=====================
+
+import main.java.io.mosip.ivv.core.structures.Persona;
+import io.mosip.ivv.dba.adapter.PersonaAdapter;
+import io.mosip.ivv.dba.service.PersonaService;
+
+
+@PostMapping(path = "/capture")
+public ResponseEntity<String> DeviceCapture(@RequestBody RequestObject obj) throws InterruptedException, JsonProcessingException{
+	// Locking 
+	String response = "Busy";
+	if(!((ReentrantLock) lock).isLocked()) {
+			lock.lock();
+			// TimeUnit.SECONDS.sleep(3);;
+			String fileName = "src/main/resources/fingerprints/thumbs.jpg";
+			PersonaService ps = new PersonaAdapter();
+			Persona p = ps.getPesonaById(obj.getPersonaId());
+			DataBlock d = new DataBlock(12, 45, 34, 56, 43, obj.getMosipProcess(), obj.getEnv(), fileName,"UNKNOWN",  obj.getCaptureTime(), 100, 98 );
+			BiometricService bobj = new BiometricService(d);
+			List<Biometrics> list = bobj.allInfo();
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				response = mapper.writeValueAsString(list);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+			HttpHeaders responseHeaders = this.getResponseHeaders(response.length());
+			lock.unlock();
+			return new ResponseEntity<String>(response, responseHeaders, HttpStatus.OK);
+	}
+	else{
+		return new ResponseEntity<String>(response, this.getResponseHeaders(response.length()), HttpStatus.SERVICE_UNAVAILABLE);
+	}
+}
+________________________________________________________________________
+
+ref: https://github.com/ankitvaishnav/IVV-Core
