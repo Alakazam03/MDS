@@ -1,7 +1,4 @@
-Fingerprint,1,Fingerprint,Active,L0,1.0,1
-Fingerprint,1,Fingerprint,Active,L0,1.0,1
-Face,1,Fingerprint,Active,L0,1.0,1
-Iris,1,Fingerprint,Active,L0,1.0,1
-Face,1,Fingerprint,Active,L0,1.0,1
-Iris,1,Fingerprint,Active,L0,1.0,1
-Vein,1,Fingerprint,Active,L0,1.0,1
+Fingerprint,12345,Slab,Active,L0,1.0,1
+Face,12356,Webcam,Active,L1,1.0,1
+Iris,25632,Single,Active,L0,1.0,1
+Vein,85693,,Inactive,L0,1.0,1
