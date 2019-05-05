@@ -5,29 +5,25 @@ import lombok.Data;
 @Data
 public class Info {
 
-	private String Type;
-	private String DeviceId;
-	private String SubType;
-	private String DeviceStatus;// Active Inactive
-//	private String certification; // L0 L1
-	private String ServiceVersion; // version of document
-	private String DeviceSubId; // starting from 1 url
-	private String CallbackId;
+	private String type;
+	private String subType;
+	private String status; // Active Inactive
 	private DeviceInfo deviceInfo;
+	private String deviceInfoSignature;
+	private String serviceVersion; // version of document
+	private String callbackId;
+	private String deviceSubId; // starting from 1 url
+	
 	
 	public Info(Device device, DeviceInfo info) {
-		super();
-		this.Type = device.getType();
-//		this.deviceId = device.deviceId;
-		this.SubType = device.getSubType();
-		this.DeviceStatus = device.getDeviceStatus();
-//		this.certification = device.certification;
-		this.ServiceVersion = device.getServiceVersion();
-//		this.deviceSubId = device.deviceSubId;
-		this.CallbackId = device.getCallbackId();
-		this.DeviceSubId = device.getDeviceSubId();
-		deviceInfo = info;
-		
+		this.type = device.getType();
+		this.subType = device.getSubType();
+		this.status = device.getDeviceStatus();
+		this.deviceInfo = info;
+		this.deviceInfoSignature = "";
+		this.serviceVersion = device.getServiceVersion();
+		this.callbackId = device.getCallbackId();
+		this.deviceSubId = device.getDeviceSubId();
 	}
 	
 }

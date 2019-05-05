@@ -1,6 +1,5 @@
 package io.mosip.mds.dto;
 
-import io.mosip.mds.entity.DataBlock;
 import lombok.Data;
 
 @Data

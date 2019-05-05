@@ -24,20 +24,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.mosip.mds.dto.Biometrics;
 import io.mosip.mds.dto.RequestObject;
-import io.mosip.mds.entity.DataBlock;
 import io.mosip.mds.entity.Device;
 import io.mosip.mds.entity.Info;
-import io.mosip.mds.service.BiometricService;
 import io.mosip.mds.service.DeviceService;
-import io.mosip.mds.service.InfoService;
 
 @RestController
 public class DeviceController {
 	@Autowired
 	private DeviceService deviceService;
-	
-	@Autowired
-	private InfoService infoService;
 	
 	@Value("${mds.location:127.0.0.1}")
 	private String location;
@@ -45,12 +39,12 @@ public class DeviceController {
 	@Value("${server.port}")
 	private String port;
 	
-	Lock lock = new ReentrantLock();
+	ReentrantLock lock = new ReentrantLock();
 	
 	
 	@GetMapping("/device")
 	public ResponseEntity<String> allDevices(@RequestBody Device deviceType) {
-		List<Device> list = deviceService.allDevices(deviceType.getType());
+		List<Device> list = deviceService.getAllDevicesByType(deviceType.getType());
 		String response = null;
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -58,7 +52,7 @@ public class DeviceController {
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-		HttpHeaders responseHeaders = this.getResponseHeaders(response.length());
+		HttpHeaders responseHeaders = this.getResponseHeaders(response.length(), "device");
 		return new ResponseEntity<String>(response, responseHeaders, HttpStatus.OK);
 	}
 	
@@ -66,7 +60,7 @@ public class DeviceController {
 	
 	@GetMapping("/info")
 	public ResponseEntity<List<Info>> allInfo() {
-		List<Info> list = infoService.allInfo();
+		List<Info> list = deviceService.allInfo();
 		String response = null;
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -74,22 +68,17 @@ public class DeviceController {
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-		HttpHeaders responseHeaders = this.getResponseHeaders(response.length());
+		HttpHeaders responseHeaders = this.getResponseHeaders(response.length(), "info");
 		return new ResponseEntity<List<Info>>(list, responseHeaders, HttpStatus.OK);
 	}
 
 
 	@PostMapping(path = "/capture")
 	public ResponseEntity<String> DeviceCapture(@RequestBody RequestObject obj) throws InterruptedException{
-		// Locking 
-		
-		if(!((ReentrantLock) lock).isLocked()) {
+		if(!lock.isLocked()) {
 				lock.lock();
-				TimeUnit.SECONDS.sleep(3);;
-				String fileName = "src/main/resources/fingerprints/thumbs.jpg";
-				DataBlock d = new DataBlock(12, 45, 34, 56, 43, obj.getMosipProcess(), obj.getEnv(), fileName,"UNKNOWN",  obj.getCaptureTime(), 100, 98 );
-				BiometricService bobj = new BiometricService(d);
-				List<Biometrics> list = bobj.allInfo();
+				//TimeUnit.SECONDS.sleep(3);
+				List<Biometrics> list = deviceService.capture(obj);
 				String response = null;
 				ObjectMapper mapper = new ObjectMapper();
 				try {
@@ -97,19 +86,19 @@ public class DeviceController {
 				} catch (JsonProcessingException e) {
 					e.printStackTrace();
 				}
-				HttpHeaders responseHeaders = this.getResponseHeaders(response.length());
+				HttpHeaders responseHeaders = this.getResponseHeaders(response.length(), "capture");
 				lock.unlock();
 				return new ResponseEntity<String>(response, responseHeaders, HttpStatus.OK);
 		}
 		else{
 			
-			 return new ResponseEntity<String>("Busy", this.getResponseHeaders(4), HttpStatus.SERVICE_UNAVAILABLE);
+			 return new ResponseEntity<String>("Busy", this.getResponseHeaders(4, "capture"), HttpStatus.SERVICE_UNAVAILABLE);
 		}
 	}
 	
-	private HttpHeaders getResponseHeaders(long contentLength) {
+	private HttpHeaders getResponseHeaders(long contentLength, String service) {
 		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.setLocation(URI.create("http://" +  location + ":" + port + "/device"));
+		responseHeaders.setLocation(URI.create("http://" +  location + ":" + port + "/" + service));
 		responseHeaders.setCacheControl(CacheControl.noCache());
 		responseHeaders.setContentLength(contentLength);
 		responseHeaders.setContentType(MediaType.APPLICATION_JSON);
